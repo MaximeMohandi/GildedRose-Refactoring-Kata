@@ -25,7 +25,6 @@ public class GildedRose
                     {
                         item.Quality += item.SellIn < 0 ? 2 : 1;
                     }
-
                     break;
                 }
                 case SpecialItem.BackstagePasses:
@@ -34,11 +33,11 @@ public class GildedRose
                     {
                         item.Quality += 1;
 
+
                         if (item.SellIn < 11 && item.Quality < 50)
                         {
                             item.Quality += 1;
                         }
-
                         if (item.SellIn < 6 && item.Quality < 50)
                         {
                             item.Quality += 1;
@@ -57,14 +56,7 @@ public class GildedRose
                     if (item.Quality < 50)
                     {
                         item.Quality += 1;
-
                     }
-
-                    if (item.SellIn >= 0) continue;
-
-
-                    if (item.Quality <= 0 || item.Name == SpecialItem.Sulfuras) continue;
-                    item.Quality -= 1;
                     break;
                 }
                 default:
