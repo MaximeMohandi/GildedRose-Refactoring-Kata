@@ -4,16 +4,19 @@ namespace GildedRoseKata;
 
 public class GildedRose
 {
-    private readonly IList<Item> _items;
+    private readonly IList<Item> _store;
+    private const int ItemMaxQuality = 50;
 
-    public GildedRose(IList<Item> items)
+    public GildedRose(IList<Item> store)
     {
-        _items = items;
+        _store = store;
     }
+
+
 
     public void UpdateQuality()
     {
-        foreach (var item in _items)
+        foreach (var item in _store)
         {
             switch (item.Name)
             {
@@ -21,26 +24,33 @@ public class GildedRose
                 {
                     item.SellIn -= 1;
 
-                    if (item.Quality < 50)
+                    if (item.IsAtMaxQuality(ItemMaxQuality)) continue;
+
+                    if (item.IsSellPassed())
                     {
-                        item.Quality += item.SellIn < 0 ? 2 : 1;
+                        item.IncreaseQualityTwice();
                     }
+                    else
+                    {
+                        item.IncreaseQuality();
+                    }
+
                     break;
                 }
                 case SpecialItem.BackstagePasses:
                 {
                     if (item.Quality < 50)
                     {
-                        item.Quality += 1;
+                        item.IncreaseQuality();
 
 
                         if (item.SellIn < 11 && item.Quality < 50)
                         {
-                            item.Quality += 1;
+                            item.IncreaseQuality();
                         }
                         if (item.SellIn < 6 && item.Quality < 50)
                         {
-                            item.Quality += 1;
+                            item.IncreaseQuality();
                         }
                     }
 
@@ -55,7 +65,7 @@ public class GildedRose
                 {
                     if (item.Quality < 50)
                     {
-                        item.Quality += 1;
+                        item.IncreaseQuality();
                     }
                     break;
                 }
@@ -64,10 +74,10 @@ public class GildedRose
                     switch (item.Quality)
                     {
                         case > 0:
-                            item.Quality -= 1;
+                            item.DecreaseQuality();
                             break;
                         case < 50:
-                            item.Quality += 1;
+                            item.IncreaseQuality();
                             break;
                     }
 
@@ -75,12 +85,25 @@ public class GildedRose
                     if (item.SellIn >= 0) continue;
 
                     if (item.Quality <= 0) continue;
-                    item.Quality -= 1;
+                    item.DecreaseQuality();
                     break;
                 }
             }
         }
     }
+}
+
+public static class ItemOperations
+{
+    public static void IncreaseQuality(this Item item) => item.Quality++;
+
+    public static void IncreaseQualityTwice(this Item item) => item.Quality += 2;
+
+    public static void DecreaseQuality(this Item item) => item.Quality--;
+
+    public static bool IsAtMaxQuality(this Item item, int maxQuality) => item.Quality >= maxQuality;
+
+    public static bool IsSellPassed(this Item item) => item.SellIn < 0;
 }
 
 
