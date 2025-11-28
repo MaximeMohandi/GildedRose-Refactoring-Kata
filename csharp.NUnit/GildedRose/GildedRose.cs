@@ -53,16 +53,27 @@ public class GildedRose
                 if (item.SellIn >= 0) continue;
                 item.Quality -= item.Quality;
             }
+            else if (item.Name == SpecialItem.Sulfuras)
+            {
+                if (item.Quality < 50)
+                {
+                    item.Quality += 1;
+
+                }
+
+                if (item.SellIn >= 0) continue;
+
+
+                if (item.Quality <= 0 || item.Name == SpecialItem.Sulfuras) continue;
+                item.Quality -= 1;
+            }
             else
             {
                 if (item.Name == SpecialItem.BackstagePasses
                     || item.Quality <= 0
                     || item.Name == SpecialItem.Sulfuras)
                 {
-                    if (item.Quality >= 50)
-                    {
-                    }
-                    else
+                    if (item.Quality < 50)
                     {
                         item.Quality += 1;
 
@@ -94,10 +105,7 @@ public class GildedRose
                     item.Quality -= 1;
                 }
 
-                if (item.Name == SpecialItem.Sulfuras)
-                {
-                }
-                else
+                if (item.Name != SpecialItem.Sulfuras)
                 {
                     item.SellIn -= 1;
                 }
@@ -123,7 +131,9 @@ public class GildedRose
                     }
                 }
             }
-            }
+
         }
     }
+}
+
 
