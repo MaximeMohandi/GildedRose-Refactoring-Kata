@@ -15,123 +15,84 @@ public class GildedRose
     {
         foreach (var item in _items)
         {
-            if (item.Name == SpecialItem.AgedBrie)
+            switch (item.Name)
             {
-                if (item.Quality < 50)
-                {
-                    item.Quality += 1;
-
-                }
-
-                item.SellIn -= 1;
-
-                if (item.SellIn < 0 && item.Quality < 50)
-                {
-                    item.Quality += 1;
-                }
-            }
-            else if (item.Name == SpecialItem.BackstagePasses)
-            {
-                if (item.Quality < 50)
-                {
-                    item.Quality += 1;
-
-                    if (item.SellIn < 11 && item.Quality < 50)
-                    {
-                        item.Quality += 1;
-                    }
-
-                    if (item.SellIn < 6 && item.Quality < 50)
-                    {
-                        item.Quality += 1;
-                    }
-                }
-
-
-                item.SellIn -= 1;
-
-                if (item.SellIn >= 0) continue;
-                item.Quality -= item.Quality;
-            }
-            else if (item.Name == SpecialItem.Sulfuras)
-            {
-                if (item.Quality < 50)
-                {
-                    item.Quality += 1;
-
-                }
-
-                if (item.SellIn >= 0) continue;
-
-
-                if (item.Quality <= 0 || item.Name == SpecialItem.Sulfuras) continue;
-                item.Quality -= 1;
-            }
-            else
-            {
-                if (item.Name == SpecialItem.BackstagePasses
-                    || item.Quality <= 0
-                    || item.Name == SpecialItem.Sulfuras)
+                case SpecialItem.AgedBrie:
                 {
                     if (item.Quality < 50)
                     {
                         item.Quality += 1;
 
-                        if (item.Name != SpecialItem.BackstagePasses)
-                        {
-                        }
-                        else
-                        {
-                            if (item.SellIn >= 11 || item.Quality >= 50)
-                            {
-                            }
-                            else
-                            {
-                                item.Quality += 1;
-                            }
-
-                            if (item.SellIn >= 6 || item.Quality >= 50)
-                            {
-                            }
-                            else
-                            {
-                                item.Quality += 1;
-                            }
-                        }
                     }
-                }
-                else
-                {
-                    item.Quality -= 1;
-                }
 
-                if (item.Name != SpecialItem.Sulfuras)
-                {
                     item.SellIn -= 1;
-                }
 
-                if (item.SellIn >= 0) continue;
-                if (item.Name == SpecialItem.AgedBrie)
+                    if (item.SellIn < 0 && item.Quality < 50)
+                    {
+                        item.Quality += 1;
+                    }
+
+                    break;
+                }
+                case SpecialItem.BackstagePasses:
                 {
                     if (item.Quality < 50)
                     {
                         item.Quality += 1;
+
+                        if (item.SellIn < 11 && item.Quality < 50)
+                        {
+                            item.Quality += 1;
+                        }
+
+                        if (item.SellIn < 6 && item.Quality < 50)
+                        {
+                            item.Quality += 1;
+                        }
                     }
+
+
+                    item.SellIn -= 1;
+
+                    if (item.SellIn >= 0) continue;
+                    item.Quality -= item.Quality;
+                    break;
                 }
-                else
+                case SpecialItem.Sulfuras:
                 {
-                    if (item.Name == SpecialItem.BackstagePasses)
+                    if (item.Quality < 50)
                     {
-                        item.Quality -= item.Quality;
+                        item.Quality += 1;
+
                     }
-                    else
+
+                    if (item.SellIn >= 0) continue;
+
+
+                    if (item.Quality <= 0 || item.Name == SpecialItem.Sulfuras) continue;
+                    item.Quality -= 1;
+                    break;
+                }
+                default:
+                {
+                    switch (item.Quality)
                     {
-                        if (item.Quality <= 0 || item.Name == SpecialItem.Sulfuras) continue;
-                        item.Quality -= 1;
+                        case > 0:
+                            item.Quality -= 1;
+                            break;
+                        case < 50:
+                            item.Quality += 1;
+                            break;
                     }
+
+                    item.SellIn -= 1;
+                    if (item.SellIn >= 0) continue;
+
+                    if (item.Quality <= 0) continue;
+                    item.Quality -= 1;
+                    break;
                 }
             }
-
         }
     }
 }
