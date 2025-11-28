@@ -5,7 +5,6 @@ namespace GildedRoseKata;
 public class GildedRose
 {
     private readonly IList<Item> _store;
-    private const int ItemMaxQuality = 50;
 
     public GildedRose(IList<Item> store)
     {
@@ -22,9 +21,9 @@ public class GildedRose
             {
                 case SpecialItem.AgedBrie:
                 {
-                    item.SellIn -= 1;
+                    item.DecreaseSellIn();
 
-                    if (item.IsAtMaxQuality(ItemMaxQuality)) continue;
+                    if (item.IsAtMaxQuality()) continue;
 
                     if (item.IsSellPassed())
                     {
@@ -55,7 +54,7 @@ public class GildedRose
                     }
 
 
-                    item.SellIn -= 1;
+                    item.DecreaseSellIn();
 
                     if (item.SellIn >= 0) continue;
                     item.Quality -= item.Quality;
@@ -91,19 +90,6 @@ public class GildedRose
             }
         }
     }
-}
-
-public static class ItemOperations
-{
-    public static void IncreaseQuality(this Item item) => item.Quality++;
-
-    public static void IncreaseQualityTwice(this Item item) => item.Quality += 2;
-
-    public static void DecreaseQuality(this Item item) => item.Quality--;
-
-    public static bool IsAtMaxQuality(this Item item, int maxQuality) => item.Quality >= maxQuality;
-
-    public static bool IsSellPassed(this Item item) => item.SellIn < 0;
 }
 
 
